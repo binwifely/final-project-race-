@@ -2,12 +2,16 @@ from pygame import*
 from button import Button
 from sprite import GameSprite
 from sprite import Player
-from random import randint
+from random import randint, shuffle
 from sprite import Human
+from sprite import Enemy
 window = display.set_mode((500, 500))
 clock = time.Clock()
 kills = 0
 scroll_speed = 3
+
+x_list = [90, 160, 240, 320]
+
 
 game = True
 run = False
@@ -21,7 +25,18 @@ exit = Button(130, 300, 240, 90, 'quit_button.png')
 
 car = Player('car.png', 250, 10, 50, 100, 5)
 
-car1 = GameSprite('car1.png', 250, 100, 50, 100, 0)
+l = [0,1,2,3]
+shuffle(l)
+
+car1 = Enemy('car1.png', x_list[l[0]], randint(500, 600), 95, 115, scroll_speed)
+car2 = Enemy('car2.png', x_list[l[1]], randint(500, 600), 95, 115, scroll_speed)
+car3 = Enemy('car3.png', x_list[l[2]], randint(500, 600), 90, 110, scroll_speed)
+
+cars = sprite.Group()
+
+cars.add(car1)
+cars.add(car2)
+cars.add(car3)
 
 human1 = Human('human1.png', 30, 100, 30, 30, randint(1,3))
 human2 = Human('human2.png', 470, 250, 30, 30, randint(1,3))
@@ -60,17 +75,23 @@ while game:
                 i.rect.x = 1000
                 kills += 1
 
-        points = font.render('вбивства:' + str(kills), True, (100, 0, 255))
-        window.blit(points, (100, 50))
+        #points = font.render('вбивства:' + str(kills), True, (100, 0, 255))
+        #window.blit(points, (100, 50))
+
+
+
         car.draw(window)
         car.move()
-        car1.draw(window)
-        human1.draw(window)
+        cars.draw(window)
+        cars.update(scroll_speed)
+
+
+        '''human1.draw(window)
         human1.moving()
         human2.draw(window)
         human2.moving()
         human3.draw(window)
-        human3.moving()
+        human3.moving()'''
     else:
         window.blit(road, (0, 0))
         if play.draw(window):
