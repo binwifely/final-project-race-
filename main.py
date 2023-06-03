@@ -8,8 +8,8 @@ from sprite import Enemy
 window = display.set_mode((500, 500))
 clock = time.Clock()
 kills = 0
-scroll_speed = 3
-
+scroll_speed = 2
+speed = 5
 x_list = [90, 160, 240, 320]
 
 
@@ -23,7 +23,7 @@ play = Button(130, 100, 240, 90, 'start_button.png')
 exit = Button(130, 300, 240, 90, 'quit_button.png')
 
 
-car = Player('car.png', 250, 10, 50, 100, 5)
+car = Player('car.png', 250, 10, 50, 100, speed)
 
 l = [0,1,2,3]
 shuffle(l)
@@ -77,15 +77,14 @@ while game:
 
         #points = font.render('вбивства:' + str(kills), True, (100, 0, 255))
         #window.blit(points, (100, 50))
-
-
-
         car.draw(window)
         car.move()
         cars.draw(window)
         cars.update(scroll_speed)
 
-
+        if sprite.spritecollideany(car, cars):
+            scroll_speed = 0
+            speed = 0
         '''human1.draw(window)
         human1.moving()
         human2.draw(window)
